@@ -52,7 +52,13 @@ jobs:
         run: |
           aws s3 ls s3://real-estate-glue-knb/plugins.zip
 
+      # Upload requirements.txt to S3
       - name: Upload requirements to S3
         run: |
-          aws s3 sync requirements.txt s3://real-estate-glue-knb/requirements.txt/ --delete
+          aws s3 cp requirements.txt s3://real-estate-glue-knb/requirements.txt
+
+      # Verify requirements.txt in S3
+      - name: Verify requirements.txt in S3
+        run: |
+          aws s3 ls s3://real-estate-glue-knb/requirements.txt
           
