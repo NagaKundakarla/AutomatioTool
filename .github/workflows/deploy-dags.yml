@@ -34,3 +34,17 @@ jobs:
       - name: Verify DAGs in S3
         run: |
           aws s3 ls s3://real-estate-glue-knb/dags/
+          
+          - name: Create plugins.zip
+            run: |
+              cd plugins
+              zip -r ../plugins.zip .
+              cd ..
+
+          - name: Upload plugins.zip to S3
+            run: |
+              aws s3 cp plugins.zip s3://real-estate-glue-knb/plugins.zip
+
+          - name: Verify plugins.zip in S3
+            run: |
+              aws s3 ls s3://real-estate-glue-knb/plugins.zip
