@@ -30,21 +30,24 @@ jobs:
         run: |
           aws s3 sync dags s3://real-estate-glue-knb/dags/ --delete
 
-      # 4. Verify files in S3
+      # 4. Verify DAGs in S3
       - name: Verify DAGs in S3
         run: |
           aws s3 ls s3://real-estate-glue-knb/dags/
-          
-          - name: Create plugins.zip
-            run: |
-              cd plugins
-              zip -r ../plugins.zip .
-              cd ..
 
-          - name: Upload plugins.zip to S3
-            run: |
-              aws s3 cp plugins.zip s3://real-estate-glue-knb/plugins.zip
+      # 5. Create plugins.zip
+      - name: Create plugins.zip
+        run: |
+          cd plugins
+          zip -r ../plugins.zip .
+          cd ..
 
-          - name: Verify plugins.zip in S3
-            run: |
-              aws s3 ls s3://real-estate-glue-knb/plugins.zip
+      # 6. Upload plugins.zip to S3
+      - name: Upload plugins.zip to S3
+        run: |
+          aws s3 cp plugins.zip s3://real-estate-glue-knb/plugins.zip
+
+      # 7. Verify plugins.zip in S3
+      - name: Verify plugins.zip in S3
+        run: |
+          aws s3 ls s3://real-estate-glue-knb/plugins.zip
