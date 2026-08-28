@@ -1,0 +1,35 @@
+name: Deploy Airflow DAGs to S3
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-dags:
+    name: Upload DAGs to S3
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Upload DAGs to S3
+        run: |
+          aws s3 sync ./dags s3://real-estate-glue-knb/dags/
+
+      - name: Verify DAGs in S3
+        run: |
+          aws s3 ls s3://real-estate-glue-knb/dags/
